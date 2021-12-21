@@ -276,7 +276,7 @@ function playOff(focusNum) {
       console.log("3P: " + threeMade + "/" + new3PA);
       console.log("FT: " + FTMade + "/" + newFTA);
 			/// player, min, fgm, fga, 3pm, 3pa, ftm, fta, reb, ast, pts
-			var playerBox = [roster[i], roster[i].CurrMinutes, twoMade, newA, threeMade, new3PA, FTMade, newFTA, newReb, newAst, playerPoints];
+			var playerBox = [roster[i], roster[i].CurrMinutes, (twoMade + threeMade), newA, threeMade, new3PA, FTMade, newFTA, newReb, newAst, playerPoints];
 			currOpponent.Box.push(playerBox);
 			currOpponent.KnicksScore = totalPoints;
     }
