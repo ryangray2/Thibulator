@@ -14,6 +14,14 @@
   display: none;
 }
 
+#pregamePage {
+  display: none;
+}
+
+#postgamePage {
+  display: none;
+}
+
 .scheduleLogo {
   max-height: 5vh;
   /* display: flex; */

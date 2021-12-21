@@ -9,7 +9,10 @@
     name:"Hawks",
     logo: "https://content.sportslogos.net/logos/6/220/full/8190_atlanta_hawks-primary-2021.png",
     TwoD: 3,
-    ThreeD: 2
+    ThreeD: 2,
+    TwoO: 3,
+    ThreeO: 1,
+    Pts: 111.5
 };
 
   var celtics = {
@@ -22,7 +25,10 @@
     name:"Celtics",
     logo: "https://content.sportslogos.net/logos/6/213/full/boston_celtics_logo_primary_19977628.png",
     TwoD: 1,
-    ThreeD: 2
+    ThreeD: 2,
+    TwoO: 2,
+    ThreeO: 3,
+    Pts: 108.3
 };
 
   var nets = {
@@ -35,7 +41,10 @@
     name:"Nets",
     logo: "https://content.sportslogos.net/logos/6/3786/full/930_brooklyn-nets-partial-2013.png",
     TwoD: 1,
-    ThreeD: 1
+    ThreeD: 1,
+    TwoO: 2,
+    ThreeO: 2,
+    Pts: 109.7
 };
 
   var hornets = {
@@ -48,7 +57,10 @@
     name:"Hornets",
     logo: "https://content.sportslogos.net/logos/6/5120/full/1926_charlotte__hornets_-primary-2015.png",
     TwoD: 3,
-    ThreeD: 3
+    ThreeD: 3,
+    TwoO: 2,
+    ThreeO: 1,
+    Pts: 114.9
 };
 
   var bulls = {
@@ -61,7 +73,10 @@
     name:"Bulls",
     logo: "https://content.sportslogos.net/logos/6/221/full/zdrycpc7mh5teihl10gko8sgf.png",
     TwoD: 1,
-    ThreeD: 3
+    ThreeD: 3,
+    TwoO: 2,
+    ThreeO: 1,
+    Pts: 109.3
 };
 
   var cavaliers = {
@@ -74,7 +89,10 @@
     name:"Cavaliers",
     logo: "https://content.sportslogos.net/logos/6/222/full/cleveland_cavaliers_logo_primary_20187997.png",
     TwoD: 1,
-    ThreeD: 1
+    ThreeD: 1,
+    TwoO: 1,
+    ThreeO: 1,
+    Pts: 107
 };
 
   var mavericks = {
@@ -87,7 +105,10 @@
     name:"Mavericks",
     logo: "https://content.sportslogos.net/logos/6/228/full/3463_dallas_mavericks-primary-2018.png",
     TwoD: 2,
-    ThreeD: 3
+    ThreeD: 3,
+    TwoO: 1,
+    ThreeO: 3,
+    Pts: 104.4
 };
 
   var nuggets = {
@@ -100,7 +121,10 @@
     name:"Nuggets",
     logo: "https://content.sportslogos.net/logos/6/229/full/8926_denver_nuggets-primary-2019.png",
     TwoD: 3,
-    ThreeD: 2
+    ThreeD: 2,
+    TwoO: 1,
+    ThreeO: 2,
+    Pts: 106.8
 };
 
   var pistons = {
@@ -113,7 +137,10 @@
     name:"Pistons",
     logo: "https://content.sportslogos.net/logos/6/223/full/2164_detroit_pistons-primary-2018.png",
     TwoD: 3,
-    ThreeD: 3
+    ThreeD: 3,
+    TwoO: 3,
+    ThreeO: 3,
+    Pts: 100.4
 };
 
   var warriors = {
@@ -126,7 +153,10 @@
     name:"Warriors",
     logo: "https://content.sportslogos.net/logos/6/235/full/3152_golden_state_warriors-primary-2020.png",
     TwoD: 1,
-    ThreeD: 1
+    ThreeD: 1,
+    TwoO: 1,
+    ThreeO: 1,
+    Pts: 111.5
 };
 
   var rockets = {
@@ -139,7 +169,10 @@
     name:"Rockets",
     logo: "https://content.sportslogos.net/logos/6/230/full/9260_houston_rockets-alternate-2020.png",
     TwoD: 3,
-    ThreeD: 1
+    ThreeD: 1,
+    TwoO: 1,
+    ThreeO: 2,
+    Pts: 106.8
 };
 
   var pacers = {
@@ -152,7 +185,10 @@
     name:"Pacers",
     logo: "https://content.sportslogos.net/logos/6/224/full/gdm7egmgv3tsspc6f1gym7cwz.gif",
     TwoD: 2,
-    ThreeD: 2
+    ThreeD: 2,
+    TwoO: 1,
+    ThreeO: 3,
+    Pts: 108
 };
 
   var clippers = {
@@ -165,7 +201,10 @@
     name:"Clippers",
     logo: "https://content.sportslogos.net/logos/6/236/full/1038_los_angeles_clippers-secondary-2016.png",
     TwoD: 1,
-    ThreeD: 1
+    ThreeD: 1,
+    TwoO: 3,
+    ThreeO: 1,
+    Pts: 105.5
 };
 
   var lakers = {
@@ -178,7 +217,10 @@
     name:"Lakers",
     logo: "https://content.sportslogos.net/logos/6/237/full/uig7aiht8jnpl1szbi57zzlsh.png",
     TwoD: 2,
-    ThreeD: 1
+    ThreeD: 1,
+    TwoO: 1,
+    ThreeO: 2,
+    Pts: 110.5
 };
 
   var grizzlies = {
@@ -191,7 +233,10 @@
     name:"Grizzlies",
     logo: "https://content.sportslogos.net/logos/6/231/full/7277_memphis_grizzlies-alternate-2019.png",
     TwoD: 2,
-    ThreeD: 3
+    ThreeD: 3,
+    TwoO: 3,
+    ThreeO: 2,
+    Pts: 110.8
 };
 
   var heat = {
@@ -204,7 +249,10 @@
     name:"Heat",
     logo: "https://content.sportslogos.net/logos/6/214/full/93lzfcfcnq125eh7etyxpuhfp.gif",
     TwoD: 3,
-    ThreeD: 2
+    ThreeD: 2,
+    TwoO: 2,
+    ThreeO: 1,
+    Pts: 106.6
 };
 
   var bucks = {
@@ -217,7 +265,10 @@
     name:"Bucks",
     logo: "https://content.sportslogos.net/logos/6/225/full/milwaukee_bucks_logo_primary_20165763.png",
     TwoD: 2,
-    ThreeD: 2
+    ThreeD: 2,
+    TwoO: 2,
+    ThreeO: 2,
+    Pts: 110
 };
 
   var timberwolves = {
@@ -230,7 +281,10 @@
     name:"Timberwolves",
     logo: "https://content.sportslogos.net/logos/6/232/full/9669_minnesota_timberwolves-primary-2018.png",
     TwoD: 3,
-    ThreeD: 1
+    ThreeD: 1,
+    TwoO: 3,
+    ThreeO: 3,
+    Pts: 108.8
 };
 
   var pelicans = {
@@ -243,7 +297,10 @@
     name:"Pelicans",
     logo: "https://content.sportslogos.net/logos/6/4962/full/2681_new_orleans_pelicans-primary-2014.png",
     TwoD: 3,
-    ThreeD: 3
+    ThreeD: 3,
+    TwoO: 3,
+    ThreeO: 3,
+    Pts: 104.4
 };
 
   var knicks = {
@@ -256,7 +313,10 @@
     name:"Knicks",
     logo: "https://content.sportslogos.net/logos/6/216/full/2nn48xofg0hms8k326cqdmuis.gif",
     TwoD: 1,
-    ThreeD: 2
+    ThreeD: 2,
+    TwoO: 3,
+    ThreeO: 1,
+    Pts: 105.9
 };
 
   var thunder = {
@@ -269,7 +329,10 @@
     name:"Thunder",
     logo: "https://content.sportslogos.net/logos/6/2687/full/khmovcnezy06c3nm05ccn0oj2.png",
     TwoD: 1,
-    ThreeD: 3
+    ThreeD: 3,
+    TwoO: 3,
+    ThreeO: 3,
+    Pts: 99.2
 };
 
   var magic = {
@@ -282,7 +345,10 @@
     name:"Magic",
     logo: "https://content.sportslogos.net/logos/6/217/full/orlando_magic_logo_primary_20117178.png",
     TwoD: 3,
-    ThreeD: 3
+    ThreeD: 3,
+    TwoO: 3,
+    ThreeO: 3,
+    Pts: 101.4
 };
 
   var sixers = {
@@ -295,7 +361,10 @@
     name:"76ers",
     logo: "https://content.sportslogos.net/logos/6/218/full/7034_philadelphia_76ers-primary-2016.png",
     TwoD: 2,
-    ThreeD: 2
+    ThreeD: 2,
+    TwoO: 2,
+    ThreeO: 2,
+    Pts: 105.7
 };
 
   var suns = {
@@ -308,7 +377,10 @@
     name:"Suns",
     logo: "https://content.sportslogos.net/logos/6/238/full/phoenix_suns_logo_primary_20143696.png",
     TwoD: 1,
-    ThreeD: 1
+    ThreeD: 1,
+    TwoO: 1,
+    ThreeO: 1,
+    Pts: 111.9
 };
 
   var blazers = {
@@ -321,7 +393,10 @@
     name:"Trail Blazers",
     logo: "https://content.sportslogos.net/logos/6/239/full/9725_portland_trail_blazers-primary-2018.png",
     TwoD: 3,
-    ThreeD: 3
+    ThreeD: 3,
+    TwoO: 2,
+    ThreeO: 2,
+    Pts: 108.5
 };
 
   var kings = {
@@ -334,7 +409,10 @@
     name:"Kings",
     logo: "https://content.sportslogos.net/logos/6/240/full/4043_sacramento_kings-primary-2017.png",
     TwoD: 2,
-    ThreeD: 2
+    ThreeD: 2,
+    TwoO: 2,
+    ThreeO: 3,
+    Pts: 110.8
 };
 
   var spurs = {
@@ -347,7 +425,10 @@
     name:"Spurs",
     logo: "https://content.sportslogos.net/logos/6/233/full/828.gif",
     TwoD: 2,
-    ThreeD: 3
+    ThreeD: 3,
+    TwoO: 2,
+    ThreeO: 2,
+    Pts: 109.8
 };
 
   var raptors = {
@@ -360,7 +441,10 @@
     name:"Raptors",
     logo: "https://content.sportslogos.net/logos/6/227/full/7024_toronto_raptors-primary-2021.png",
     TwoD: 2,
-    ThreeD: 3
+    ThreeD: 3,
+    TwoO: 3,
+    ThreeO: 2,
+    Pts: 106.4
 };
 
   var jazz = {
@@ -373,7 +457,10 @@
     name:"Jazz",
     logo: "https://content.sportslogos.net/logos/6/234/full/6749_utah_jazz-primary-2017.png",
     TwoD: 2,
-    ThreeD: 1
+    ThreeD: 1,
+    TwoO: 1,
+    ThreeO: 1,
+    Pts: 115.4
 };
 
   var wizards = {
@@ -386,7 +473,10 @@
     name:"Wizards",
     logo: "https://content.sportslogos.net/logos/6/219/full/5671_washington_wizards-primary-2016.png",
     TwoD: 1,
-    ThreeD: 1
+    ThreeD: 1,
+    TwoO: 1,
+    ThreeO: 3,
+    Pts: 105.6
 };
 
 var teams = [hawks, celtics, nets, hornets, bulls, cavaliers, mavericks, nuggets, pistons, warriors, rockets, pacers, clippers, lakers, grizzlies, heat, bucks, timberwolves, pelicans, knicks, thunder, magic, sixers, suns, blazers, kings, spurs, raptors, jazz, wizards];

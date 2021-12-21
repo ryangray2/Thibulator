@@ -18,12 +18,14 @@ fetch("https://free-nba.p.rapidapi.com/stats?page=0&per_page=25", {
 var currOpponent;
 var currOffFocus = 0;
 var currDefFocus = 0;
+var pastOpp = [];
 
 var navPage = document.getElementById("navPage");
 var scheduleCont = document.getElementById("scheduleCont");
 var statsCont = document.getElementById("statsCont");
 var rotationCont = document.getElementById("rotationCont");
 var pregamePage = document.getElementById("pregamePage");
+var postgamePage = document.getElementById("postgamePage");
 
 function startPressed() {
   document.getElementById("startPage").style.display = "none";
@@ -202,20 +204,20 @@ function normalizer(minutes, stat, player) {
 function playOff(focusNum) {
   var threeFocus;
   var totalPoints = 0;
-  console.log(focusNum);
-  if (focusNum === "-3") {
+  console.log(parseInt(focusNum));
+  if (parseInt(focusNum) === -3) {
     threeFocus = 1.5;
-  } else if (focusNum === "-2") {
+  } else if (parseInt(focusNum) === -2) {
     threeFocus = 1.25;
-  } else if (focusNum === "-1") {
+  } else if (parseInt(focusNum) === -1) {
     threeFocus = 1.1;
-  } else if (focusNum === "0") {
+  } else if (parseInt(focusNum) === 0) {
     threeFocus = 1;
-  } else if (focusNum === "1") {
+  } else if (parseInt(focusNum) === 1) {
     threeFocus = .9;
-  } else if (focusNum === "2") {
+  } else if (parseInt(focusNum) === 2) {
     threeFocus = .75;
-  } else if (focusNum === "3") {
+  } else if (parseInt(focusNum) === 3) {
     threeFocus = .5;
   }
 
@@ -223,11 +225,13 @@ function playOff(focusNum) {
 
   for (let i = 0; i < roster.length; i++) {
     if (roster[i].CurrMinutes > 0) {
-      var init3PA = normalizer(roster[i].CurrMinutes, roster[i].ThreeA, roster[i]);
+			var temp3PA = normalizer(roster[i].CurrMinutes, roster[i].ThreeA, roster[i]);
+      var init3PA = Math.round(randn_bm() * 4 + (temp3PA - 2));
 
       var new3PA = Math.round(init3PA * threeFocus);
       console.log(new3PA);
-      var newA = Math.round(normalizer(roster[i].CurrMinutes, roster[i].FGA, roster[i]));
+			var tempA = normalizer(roster[i].CurrMinutes, roster[i].FGA, roster[i]);
+      var newA = Math.round(randn_bm() * 6 + (tempA - 3));
       var new2PA = newA - new3PA;
       /// adjust percents
       var new2Pcent = (randn_bm() * 2) * roster[i].TwoCENT;
@@ -240,6 +244,7 @@ function playOff(focusNum) {
       } else if (currOpponent.Opponent.ThreeD === 3) {
         var adj3Pcent = ((randn_bm() * 50 + 100) / 100) * new3Pcent;
       }
+
       if (currOpponent.Opponent.TwoD === 1) {
         var adj2Pcent = ((randn_bm() * 50 + 50) / 100) * new2Pcent;
       } else if (currOpponent.Opponent.TwoD === 2) {
@@ -247,6 +252,10 @@ function playOff(focusNum) {
       } else if (currOpponent.Opponent.TwoD === 3) {
         var adj2Pcent = ((randn_bm() * 50 + 100) / 100) * new2Pcent;
       }
+			if (roster[i].CurrMinutes > 40) {
+				adj3Pcent *= ((randn_bm() * 50 + 50) / 100);
+				adj2Pcent *= ((randn_bm() * 50 + 50) / 100);
+			}
       var newFTcent = (randn_bm() * 2) * roster[i].FTCent;
       var newFTA = Math.round((randn_bm() * 2) * normalizer(roster[i].CurrMinutes, roster[i].FTA, roster[i]));
 
@@ -257,14 +266,66 @@ function playOff(focusNum) {
       var playerPoints = FTMade + (twoMade * 2) + (threeMade * 3);
       totalPoints += playerPoints;
 
+			// misc stats
+			var newAst = Math.round((randn_bm() * 2) * normalizer(roster[i].CurrMinutes, roster[i].AST, roster[i]));
+			var newReb = Math.round((randn_bm() * 2) * normalizer(roster[i].CurrMinutes, roster[i].TRB, roster[i]));
+
       console.log(roster[i].Name);
       console.log("PTS: " + playerPoints);
       console.log("FG: " + (twoMade + threeMade) + "/" + newA);
       console.log("3P: " + threeMade + "/" + new3PA);
       console.log("FT: " + FTMade + "/" + newFTA);
+			/// player, min, fgm, fga, 3pm, 3pa, ftm, fta, reb, ast, pts
+			var playerBox = [roster[i], roster[i].CurrMinutes, twoMade, newA, threeMade, new3PA, FTMade, newFTA, newReb, newAst, playerPoints];
+			currOpponent.Box.push(playerBox);
+			currOpponent.KnicksScore = totalPoints;
     }
   }
   console.log("Total Points: " + totalPoints);
+}
+
+function playDef(focusNum) {
+	// pack paint +
+	// perimeter -
+	var teamStrength = currOpponent.Opponent.TwoO - currOpponent.Opponent.ThreeO;
+	/// positive: strength is 3s
+	/// negative: strength is 2s
+	var focus = parseInt(focusNum);
+	var match = false;
+	if (teamStrength < 0 && focus > 0) {
+		match = true;
+	} else if (teamStrength > 0 && focus < 0) {
+		match = true;
+	}
+	console.log(match);
+
+	var prePoints = (randn_bm() * 20 + (currOpponent.Opponent.Pts - 10));
+	var postPoints;
+	if (match) {
+		console.log("test1");
+		var num = Math.abs(teamStrength);
+		if (num == 2) {
+			postPoints = prePoints * (.93 - Math.abs((focus/100)));
+		} else if (num == 1) {
+			console.log("test2");
+			console.log((focus/10));
+			postPoints = prePoints * (.98 - Math.abs((focus/100)));
+		} else {
+			postPoints = prePoints;
+		}
+	} else {
+		var num = Math.abs(teamStrength);
+		if (num == 2) {
+			postPoints = prePoints * (1.07 + Math.abs((focus/100)));
+		} else if (num == 1) {
+			postPoints = prePoints * (1.02 + Math.abs((focus/100)));
+		} else {
+			postPoints = prePoints;
+		}
+	}
+	var finalOppPoints = Math.round(postPoints);
+	currOpponent.OppScore = finalOppPoints;
+	console.log(finalOppPoints);
 }
 
 
@@ -451,11 +512,108 @@ function generatePregame() {
   var simButton = document.createElement("button");
   simButton.innerHTML = "GO";
   simButton.addEventListener('click', function() {
-    playOff(currOffFocus);
+		sim();
   });
 
   simCol.appendChild(simButton);
   simRow.appendChild(simCol);
   root.appendChild(simRow);
 
+}
+
+function sim() {
+	playOff(currOffFocus);
+	playDef(currDefFocus);
+	if (currOpponent.KnicksScore > currOpponent.OppScore) {
+		currOpponent.Result = "W";
+	} else if (currOpponent.KnicksScore < currOpponent.OppScore) {
+		currOpponent.Result = "L";
+	} else {
+		currOpponent.Result = "L";
+		currOpponent.OppScore += 1;
+	}
+
+	pastOpp.push(currOpponent);
+	pregamePage.style.display = "none";
+	postgamePage.style.display = "block";
+	generatePostgame();
+}
+
+function generatePostgame() {
+	var root = document.getElementById("postgamePage");
+	while (root.firstChild) {
+		root.removeChild(root.firstChild);
+	}
+
+	var matchupRow = document.createElement("div");
+	matchupRow.classList.add("row", "text-center");
+
+	var knicksCol = document.createElement("div");
+	knicksCol.classList.add("col-3");
+	var knicksLogo = document.createElement("img");
+	knicksLogo.setAttribute("src", knicks.logo);
+	knicksLogo.classList.add("scheduleLogo", "float-right");
+	knicksCol.appendChild(knicksLogo);
+	matchupRow.appendChild(knicksCol);
+
+	var knickScoreCol = document.createElement("div");
+	knickScoreCol.classList.add("col-2");
+	knickScoreCol.style.margin = "auto";
+	var knickScoreP = document.createElement("p");
+	knickScoreP.innerHTML = currOpponent.KnicksScore;
+	knickScoreCol.appendChild(knickScoreP);
+	matchupRow.appendChild(knickScoreCol);
+
+	var oppScoreCol = document.createElement("div");
+	oppScoreCol.classList.add("col-2");
+	oppScoreCol.style.margin = "auto";
+	var oppScoreP = document.createElement("p");
+	oppScoreP.innerHTML = currOpponent.OppScore;
+	oppScoreCol.appendChild(oppScoreP);
+	matchupRow.appendChild(oppScoreCol);
+
+	var oppCol = document.createElement("div");
+	oppCol.classList.add("col-3", "text-center");
+	oppCol.style.margin = "auto";
+	var oppLogo = document.createElement("img");
+	oppLogo.setAttribute("src", currOpponent.Opponent.logo);
+	oppLogo.classList.add("scheduleLogo", "float-right");
+	oppCol.appendChild(oppLogo);
+	matchupRow.appendChild(oppCol);
+	root.appendChild(matchupRow);
+
+	var tab = document.createElement("table");
+	tab.classList.add("table", "table-striped");
+	var tabHead = document.createElement("thead");
+	var tr = document.createElement("tr");
+	var guide = ["PLAYER", "MIN", "FGM", "FGA", "3PM", "3PA", "FTM", "FTA", "REB", "AST", "PTS"];
+	for (let i = 0; i < guide.length; i++) {
+		var th = document.createElement("th");
+		th.setAttribute("scope", "col");
+		th.innerHTML = guide[i];
+		tr.appendChild(th);
+	}
+	tabHead.appendChild(tr);
+	tab.appendChild(tabHead);
+
+	var tabBody = document.createElement("tbody");
+	var tr2 = document.createElement("tr");
+	for (let j = 0; j < currOpponent.Box.length; j++) {
+		var tr = document.createElement("tr");
+		for (let k = 0; k < currOpponent.Box[j].length; k++) {
+
+			var td = document.createElement("td");
+			if(k == 0) {
+				td.innerHTML = currOpponent.Box[j][k].Name;
+			} else {
+				td.innerHTML = currOpponent.Box[j][k];
+			}
+
+			tr.appendChild(td);
+
+		}
+		tabBody.appendChild(tr);
+	}
+	tab.appendChild(tabBody);
+	root.appendChild(tab);
 }
