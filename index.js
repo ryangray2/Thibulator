@@ -90,7 +90,7 @@ function generateSchedule() {
     row.appendChild(locCol);
 
     var teamCol = document.createElement("div");
-    teamCol.classList.add("col-6");
+    teamCol.classList.add("col-3");
     var teamLogo = document.createElement("img");
     teamLogo.classList.add("scheduleLogo");
     teamLogo.setAttribute("src", scheduleArr[i].Opponent.logo);
@@ -98,6 +98,17 @@ function generateSchedule() {
     teamCol.appendChild(teamLogo);
 
     row.appendChild(teamCol);
+
+		if (scheduleArr[i].Result != "") {
+			var resCol = document.createElement("div");
+			resCol.classList.add("col-3");
+			var resP = document.createElement("p");
+			resP.innerHTML = scheduleArr[i].Result;
+			resCol.appendChild(resP);
+
+			resCol.appendChild(resP);
+			row.appendChild(resCol);
+		}
 
     if (scheduleArr[i].Result === "" && !play) {
       currOpponent = scheduleArr[i];
@@ -111,6 +122,113 @@ function generateSchedule() {
     }
     root.appendChild(row);
   }
+}
+
+function teamStatsNav() {
+	generateTeamStats();
+
+}
+
+function playerStatsNav() {
+	generatePlayerStats();
+
+}
+
+function generateTeamStats() {
+	var root = document.getElementById("teamStatsCont");
+  while (root.firstChild) {
+    root.removeChild(root.firstChild);
+  }
+	var teamStatsArr = getTeamStats();
+	console.log(teamStatsArr);
+}
+
+function getTeamStats() {
+	var result = [];
+	var gp = 0;
+	var totalKnicksPoints = 0;
+	var totalOppPoints = 0;
+	var wins = 0;
+	var threepa = 0;
+	var threem = 0;
+	var fga = 0;
+	var fgm = 0;
+	var reb = 0;
+	var ast = 0;
+	var fta = 0;
+	var ftm = 0;
+	for (let i = 0; i < scheduleArr.length; i++) {
+		if (scheduleArr[i].Result === "") {
+
+			break;
+		}
+		gp++;
+		totalKnicksPoints += scheduleArr[i].KnicksScore;
+		totalOppPoints += scheduleArr[i].OppScore;
+		if (scheduleArr[i].Result === "W") {
+			wins++;
+		}
+		for (let j = 0; j < scheduleArr[i].Box.length; j++) {
+
+			/// 0: player, 1: min, 2: fgm, 3: fga, 4: 3pm, 5: 3pa, 6: ftm, 7: fta, 8: reb, 9: ast, 10: pts
+			threepa += scheduleArr[i].Box[j][5];
+			threem += scheduleArr[i].Box[j][4];
+			fga += scheduleArr[i].Box[j][3];
+			fgm += scheduleArr[i].Box[j][2];
+			reb += scheduleArr[i].Box[j][8];
+		 	ast += scheduleArr[i].Box[j][9];
+			fta += scheduleArr[i].Box[j][7];
+			ftm += scheduleArr[i].Box[j][6];
+		}
+	}
+	result.push(["Wins", wins], ["Losses", (gp - wins)], ["PS/G", (totalKnicksPoints/gp).toFixed(2)], ["PA/G", (totalOppPoints/gp).toFixed(2)], ["FG%", (fgm/fga).toFixed(3)], ["3P%", (threem/threepa).toFixed(3)], ["FT%", (ftm/fta).toFixed(3)], ["RPG", (reb/gp).toFixed(2)], ["AST", (ast/gp).toFixed(2)]);
+	return result;
+}
+
+function generatePlayerStats() {
+	var root = document.getElementById("playerStatsCont");
+	while (root.firstChild) {
+		root.removeChild(root.firstChild);
+	}
+	var playerStatsArr = getPlayerStats();
+	console.log(playerStatsArr);
+}
+
+function getPlayerStats() {
+	var result = [];
+
+	for (let i = 0; i < roster.length; i++) {
+		var arr = [];
+		var gp = 0;
+		var threepa = 0;
+		var threem = 0;
+		var fga = 0;
+		var fgm = 0;
+		var reb = 0;
+		var ast = 0;
+		var fta = 0;
+		var ftm = 0;
+		var pts = 0;
+		for (let j = 0; j < scheduleArr.length; j++) {
+			for (let k = 0; k < scheduleArr[j].Box.length; k++) {
+				if (roster[i].Name === scheduleArr[j].Box[k][0].Name) {
+							gp++;
+							threepa += scheduleArr[i].Box[k][5];
+							threem += scheduleArr[i].Box[k][4];
+							fga += scheduleArr[i].Box[k][3];
+							fgm += scheduleArr[i].Box[k][2];
+							reb += scheduleArr[i].Box[k][8];
+							ast += scheduleArr[i].Box[k][9];
+							fta += scheduleArr[i].Box[k][7];
+							ftm += scheduleArr[i].Box[k][6];
+							pts += scheduleArr[i].Box[k][10];
+				}
+			}
+		}
+		arr.push(["Player", roster[i].Name], ["FG%", (fgm/fga).toFixed(3)], ["3P%", (threem/threepa).toFixed(3)], ["FT%", (ftm/fta).toFixed(3)], ["RPG", (reb/gp).toFixed(2)], ["AST", (ast/gp).toFixed(2)], ["PPG", (pts/gp).toFixed(2)]);
+		result.push(arr);
+	}
+	return result;
 }
 
 function getCurrMinutes() {
@@ -172,11 +290,10 @@ function generateMinutes() {
     minP.setAttribute("id", String(i) + "mins");
     minCol.appendChild(minP);
 
-
     input.oninput = function() {
       roster[i].CurrMinutes = this.value;
       displayIndivMin(String(i), roster[i].CurrMinutes);
-      minP.innerHTML = this.value;
+      // minP.innerHTML = this.value;
       var total = 0;
       for (let j = 0; j < roster.length; j++) {
         total += parseInt(roster[j].CurrMinutes);
@@ -190,6 +307,9 @@ function generateMinutes() {
     row.appendChild(sliderCol);
     row.appendChild(minCol);
     root.appendChild(row);
+		console.log(roster[i].CurrMinutes);
+		displayIndivMin(String(i), roster[i].CurrMinutes);
+		console.log(i);
   }
 }
 
@@ -229,6 +349,9 @@ function playOff(focusNum) {
       var init3PA = Math.round(randn_bm() * 4 + (temp3PA - 2));
 
       var new3PA = Math.round(init3PA * threeFocus);
+			if (new3PA < 0) {
+				new3PA = 0;
+			}
       console.log(new3PA);
 			var tempA = normalizer(roster[i].CurrMinutes, roster[i].FGA, roster[i]);
       var newA = Math.round(randn_bm() * 6 + (tempA - 3));
@@ -279,7 +402,8 @@ function playOff(focusNum) {
 			var playerBox = [roster[i], roster[i].CurrMinutes, (twoMade + threeMade), newA, threeMade, new3PA, FTMade, newFTA, newReb, newAst, playerPoints];
 			currOpponent.Box.push(playerBox);
 			currOpponent.KnicksScore = totalPoints;
-    }
+    } else {
+		}
   }
   console.log("Total Points: " + totalPoints);
 }
@@ -323,6 +447,10 @@ function playDef(focusNum) {
 			postPoints = prePoints;
 		}
 	}
+	if (roster[6].CurrMinutes + roster[7].CurrMinutes >= 40 || roster[6].CurrMinutes + roster[9].CurrMinutes >= 40 || roster[7].CurrMinutes + roster[9].CurrMinutes >= 40) {
+	} else {
+		postPoints *= 1.05;
+	}
 	var finalOppPoints = Math.round(postPoints);
 	currOpponent.OppScore = finalOppPoints;
 	console.log(finalOppPoints);
@@ -338,19 +466,6 @@ function randn_bm() {
   if (num > 1 || num < 0) return randn_bm() // resample between 0 and 1
   return num
 }
-
-// console.log((randn_bm() * 50 + 50) / 100);
-// console.log((randn_bm() * 50 + 50) / 100);
-// console.log((randn_bm() * 50 + 50) / 100);
-// console.log((randn_bm() * 50 + 50) / 100);
-// console.log((randn_bm() * 50 + 50) / 100);
-// console.log((randn_bm() * 50 + 50) / 100);
-// console.log((randn_bm() * 50 + 50) / 100);
-// console.log((randn_bm() * 50 + 50) / 100);
-// console.log((randn_bm() * 50 + 50) / 100);
-// console.log((randn_bm() * 50 + 50) / 100);
-
-
 
 function playPressed() {
   navPage.style.display = "none";
@@ -518,7 +633,7 @@ function generatePregame() {
   simCol.appendChild(simButton);
   simRow.appendChild(simCol);
   root.appendChild(simRow);
-
+	console.log(currOpponent);
 }
 
 function sim() {
@@ -586,7 +701,7 @@ function generatePostgame() {
 	tab.classList.add("table", "table-striped");
 	var tabHead = document.createElement("thead");
 	var tr = document.createElement("tr");
-	var guide = ["PLAYER", "MIN", "FGM", "FGA", "3PM", "3PA", "FTM", "FTA", "REB", "AST", "PTS"];
+	var guide = ["PLAYER", "MIN", "FGM", "FGA", "3PM", "3PA", "REB", "AST", "PTS"];
 	for (let i = 0; i < guide.length; i++) {
 		var th = document.createElement("th");
 		th.setAttribute("scope", "col");
@@ -601,7 +716,9 @@ function generatePostgame() {
 	for (let j = 0; j < currOpponent.Box.length; j++) {
 		var tr = document.createElement("tr");
 		for (let k = 0; k < currOpponent.Box[j].length; k++) {
-
+			if (k===6 || k===7) {
+				continue;
+			}
 			var td = document.createElement("td");
 			if(k == 0) {
 				td.innerHTML = currOpponent.Box[j][k].Name;
@@ -616,4 +733,25 @@ function generatePostgame() {
 	}
 	tab.appendChild(tabBody);
 	root.appendChild(tab);
+
+	var buttonRow = document.createElement("div");
+	buttonRow.classList.add("row", "text-center");
+
+	var buttonCol = document.createElement("div");
+	buttonCol.classList.add("col-12");
+
+	var button = document.createElement("button");
+	button.innerHTML = "NEXT";
+	button.addEventListener('click', function() {
+		nextPressed();
+	});
+
+	buttonCol.appendChild(button);
+	buttonRow.appendChild(buttonCol);
+	root.appendChild(buttonRow);
+}
+
+function nextPressed() {
+	postgamePage.style.display = "none";
+	startPressed();
 }

@@ -10,6 +10,14 @@
   display: none;
 }
 
+#teamStatsCont {
+  display: none;
+}
+
+#playerStatsCont {
+  display: none;
+}
+
 #rotationCont {
   display: none;
 }
@@ -21,6 +29,8 @@
 #postgamePage {
   display: none;
 }
+
+
 
 .scheduleLogo {
   max-height: 5vh;
