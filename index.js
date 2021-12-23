@@ -196,7 +196,7 @@ function generatePlayerStats() {
 
 function getPlayerStats() {
 	var result = [];
-
+ console.log(scheduleArr[0].Box);
 	for (let i = 0; i < roster.length; i++) {
 		var arr = [];
 		var gp = 0;
@@ -212,16 +212,17 @@ function getPlayerStats() {
 		for (let j = 0; j < scheduleArr.length; j++) {
 			for (let k = 0; k < scheduleArr[j].Box.length; k++) {
 				if (roster[i].Name === scheduleArr[j].Box[k][0].Name) {
+							var game = scheduleArr[j].Box[k];
 							gp++;
-							threepa += scheduleArr[i].Box[k][5];
-							threem += scheduleArr[i].Box[k][4];
-							fga += scheduleArr[i].Box[k][3];
-							fgm += scheduleArr[i].Box[k][2];
-							reb += scheduleArr[i].Box[k][8];
-							ast += scheduleArr[i].Box[k][9];
-							fta += scheduleArr[i].Box[k][7];
-							ftm += scheduleArr[i].Box[k][6];
-							pts += scheduleArr[i].Box[k][10];
+							threepa += game[5];
+							threem += game[4];
+							fga += game[3];
+							fgm += game[2];
+							reb += game[8];
+							ast += game[9];
+							fta += game[7];
+							ftm += game[6];
+							pts += game[10];
 				}
 			}
 		}
