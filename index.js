@@ -23,6 +23,8 @@ var pastOpp = [];
 var navPage = document.getElementById("navPage");
 var scheduleCont = document.getElementById("scheduleCont");
 var statsCont = document.getElementById("statsCont");
+var teamStatsCont = document.getElementById("teamStatsCont");
+var playerStatsCont = document.getElementById("playerStatsCont");
 var rotationCont = document.getElementById("rotationCont");
 var pregamePage = document.getElementById("pregamePage");
 var postgamePage = document.getElementById("postgamePage");
@@ -52,6 +54,9 @@ function statsNav() {
     scheduleCont.style.display = "none";
     statsCont.style.display = "block";
     rotationCont.style.display = "none";
+		generatePlayerStats();
+		playerStatsCont.style.display = "block";
+		teamStatsCont.style.display = "none";
   }
 }
 
@@ -126,12 +131,14 @@ function generateSchedule() {
 
 function teamStatsNav() {
 	generateTeamStats();
-
+	teamStatsCont.style.display = "block";
+	playerStatsCont.style.display = "none";
 }
 
 function playerStatsNav() {
 	generatePlayerStats();
-
+	playerStatsCont.style.display = "block";
+	teamStatsCont.style.display = "none";
 }
 
 function generateTeamStats() {
@@ -141,6 +148,25 @@ function generateTeamStats() {
   }
 	var teamStatsArr = getTeamStats();
 	console.log(teamStatsArr);
+	var tab = document.createElement("table");
+	tab.classList.add("table", "table-striped");
+	var tabBody = document.createElement("tbody");
+	for (let i = 0; i < teamStatsArr.length; i++) {
+		var tr = document.createElement("tr");
+		var th = document.createElement("th");
+		th.setAttribute("scope", "row");
+		th.innerHTML = teamStatsArr[i][0];
+		var td = document.createElement("td");
+		td.innerHTML = teamStatsArr[i][1];
+		if (teamStatsArr[i][1] == "NaN") {
+			td.innerHTML = "-";
+		}
+		tr.appendChild(th);
+		tr.appendChild(td);
+		tabBody.appendChild(tr);
+	}
+	tab.appendChild(tabBody);
+	root.appendChild(tab);
 }
 
 function getTeamStats() {
@@ -192,6 +218,38 @@ function generatePlayerStats() {
 	}
 	var playerStatsArr = getPlayerStats();
 	console.log(playerStatsArr);
+
+	var tab = document.createElement("table");
+	tab.classList.add("table", "table-striped");
+	var tabHead = document.createElement("thead");
+	var tr = document.createElement("tr");
+	var guide = ["PLAYER", "MIN", "FG%", "3P%", "FT%", "RPG", "APG", "PPG"];
+	for (let i = 0; i < guide.length; i++) {
+		var th = document.createElement("th");
+		th.setAttribute("scope", "col");
+		th.innerHTML = guide[i];
+		tr.appendChild(th);
+	}
+	tabHead.appendChild(tr);
+	tab.appendChild(tabHead);
+
+	var tabBody = document.createElement("tbody");
+	for (let i = 0; i < playerStatsArr.length; i++) {
+		var tr = document.createElement("tr");
+		for (let j = 0; j < playerStatsArr[i].length; j++) {
+			var td = document.createElement("td");
+			td.innerHTML = playerStatsArr[i][j][1];
+			if (playerStatsArr[i][j][1] == "NaN") {
+				td.innerHTML = "-";
+			}
+			tr.appendChild(td);
+		}
+		tabBody.appendChild(tr);
+	}
+
+
+	tab.appendChild(tabBody);
+	root.appendChild(tab);
 }
 
 function getPlayerStats() {
@@ -209,6 +267,7 @@ function getPlayerStats() {
 		var fta = 0;
 		var ftm = 0;
 		var pts = 0;
+		var min = 0;
 		for (let j = 0; j < scheduleArr.length; j++) {
 			for (let k = 0; k < scheduleArr[j].Box.length; k++) {
 				if (roster[i].Name === scheduleArr[j].Box[k][0].Name) {
@@ -223,10 +282,11 @@ function getPlayerStats() {
 							fta += game[7];
 							ftm += game[6];
 							pts += game[10];
+							min += game[1];
 				}
 			}
 		}
-		arr.push(["Player", roster[i].Name], ["FG%", (fgm/fga).toFixed(3)], ["3P%", (threem/threepa).toFixed(3)], ["FT%", (ftm/fta).toFixed(3)], ["RPG", (reb/gp).toFixed(2)], ["AST", (ast/gp).toFixed(2)], ["PPG", (pts/gp).toFixed(2)]);
+		arr.push(["PLAYER", roster[i].Name], ["MPG", (min/gp).toFixed(1)], ["FG%", (fgm/fga).toFixed(3)], ["3P%", (threem/threepa).toFixed(3)], ["FT%", (ftm/fta).toFixed(3)], ["RPG", (reb/gp).toFixed(1)], ["APG", (ast/gp).toFixed(1)], ["PPG", (pts/gp).toFixed(1)]);
 		result.push(arr);
 	}
 	return result;
@@ -292,7 +352,7 @@ function generateMinutes() {
     minCol.appendChild(minP);
 
     input.oninput = function() {
-      roster[i].CurrMinutes = this.value;
+      roster[i].CurrMinutes = parseInt(this.value);
       displayIndivMin(String(i), roster[i].CurrMinutes);
       // minP.innerHTML = this.value;
       var total = 0;
@@ -384,6 +444,9 @@ function playOff(focusNum) {
       var newFTA = Math.round((randn_bm() * 2) * normalizer(roster[i].CurrMinutes, roster[i].FTA, roster[i]));
 
       var FTMade = Math.round(newFTcent * newFTA);
+			if (FTMade > newFTA) {
+				FTMade = newFTA;
+			}
       var twoMade = Math.round(adj2Pcent * new2PA);
       var threeMade = Math.round(adj3Pcent * new3PA);
 
@@ -399,6 +462,7 @@ function playOff(focusNum) {
       console.log("FG: " + (twoMade + threeMade) + "/" + newA);
       console.log("3P: " + threeMade + "/" + new3PA);
       console.log("FT: " + FTMade + "/" + newFTA);
+			console.log(roster[i].CurrMinutes);
 			/// player, min, fgm, fga, 3pm, 3pa, ftm, fta, reb, ast, pts
 			var playerBox = [roster[i], roster[i].CurrMinutes, (twoMade + threeMade), newA, threeMade, new3PA, FTMade, newFTA, newReb, newAst, playerPoints];
 			currOpponent.Box.push(playerBox);
